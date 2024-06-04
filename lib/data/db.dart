@@ -65,3 +65,12 @@ void add(Trx t) async {
   );
   db.close();
 }
+
+Future<void> editTrxDB(String time, Trx x) async {
+  String updateSql =
+      'UPDATE trx SET name = ?, amount = ?, isadd = ? WHERE time = ?';
+  List<dynamic> updateArgs = [x.name, x.amount, x.type, x.time];
+  final db = await openMyDatabase();
+  print("enterin3");
+  await db.execute(updateSql, updateArgs);
+}

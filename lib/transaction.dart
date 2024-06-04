@@ -12,8 +12,9 @@ class Transaction extends StatelessWidget {
 
   TrxService ts = TrxService();
 
-  late String amount_t;
-  late String name_t;
+  String amount_t = "";
+  String name_t = "";
+  bool isAdd_t = false;
 
   Transaction(
       {super.key,
@@ -65,6 +66,10 @@ class Transaction extends StatelessWidget {
   }
 
   _popEdit() {
+    this.name_t = this.name;
+    this.amount_t = this.amount.toString();
+    this.isAdd_t = isAdd;
+
     showDialog(
       context: this.parentContext,
       builder: (BuildContext context) {
@@ -101,9 +106,9 @@ class Transaction extends StatelessWidget {
                   width: 5,
                 ),
                 Switch(
-                  value: this.isAdd,
+                  value: this.isAdd_t,
                   onChanged: (bool newValue) {
-                    this.isAdd = newValue;
+                    this.isAdd_t = newValue;
                   },
                 ),
                 SizedBox(
@@ -134,7 +139,7 @@ class Transaction extends StatelessWidget {
   }
 
   _edit() {
-    ts.editTrx(this.time, this.name_t, double.parse(this.amount_t), this.isAdd);
+    ts.editTrx(this.time, this.name_t, double.parse(amount_t), this.isAdd);
   }
 
   _menu() {

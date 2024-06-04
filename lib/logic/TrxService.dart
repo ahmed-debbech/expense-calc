@@ -13,5 +13,9 @@ class TrxService {
     add(x);
   }
 
-  void editTrx(String time, String name, double amount, bool isAdd) {}
+  void editTrx(String time, String name, double amount, bool isAdd) async {
+    print("enterin");
+    Trx x = Trx(name: name, time: time, amount: amount, type: isAdd);
+    await editTrxDB(time, x);
+  }
 }
