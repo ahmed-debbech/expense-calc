@@ -49,6 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   String sub_howMuch = "";
   String sub_whatIs = "";
+  String balance = "0";
 
   @override
   void initState() {
@@ -93,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
               'Your current balance is:',
             ),
             Text(
-              '129.234',
+              balance,
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             Container(
@@ -167,14 +168,19 @@ class _MyHomePageState extends State<MyHomePage> {
             name: list[i].name,
             time: list[i].time,
             amount: list[i].amount,
-            isAdd: list[i].type));
+            isAdd: list[i].type,
+            onPop: _onChildPop));
       }
       setState(() {
         this.trx = txs;
       });
     });
+    ts.balanceIt().then((value) => setState((){this.balance = value.toString();}));
   }
-
+  void _onChildPop() {
+    print("eee");
+    _renderTransactions();
+  }
   _done(bool isAdd) {
     if (isAdd) {
       print(add_whatIs);

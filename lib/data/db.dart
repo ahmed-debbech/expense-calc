@@ -4,7 +4,7 @@ import 'package:path/path.dart';
 
 Future<Database> openMyDatabase() async {
   final dbPath = await getDatabasesPath();
-  final path = join(dbPath, 'db6.db');
+  final path = join(dbPath, 'db2.db');
   final database = await openDatabase(
     path,
     version: 1,
@@ -71,6 +71,13 @@ Future<void> editTrxDB(String time, Trx x) async {
       'UPDATE trx SET name = ?, amount = ?, isadd = ? WHERE time = ?';
   List<dynamic> updateArgs = [x.name, x.amount, x.type, x.time];
   final db = await openMyDatabase();
-  print("enterin3");
+  await db.execute(updateSql, updateArgs);
+}
+
+Future<void> deleteDb(String time) async{
+  String updateSql =
+      'delete from trx where time = ?';
+  List<dynamic> updateArgs = [time];
+  final db = await openMyDatabase();
   await db.execute(updateSql, updateArgs);
 }
