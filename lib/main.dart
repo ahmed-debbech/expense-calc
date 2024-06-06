@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
             ColorScheme.fromSeed(seedColor: Color.fromRGBO(7, 101, 148, 1)),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Calculator'),
+      home: const MyHomePage(title: 'Budget Calculator v1.0'),
     );
   }
 }
@@ -49,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   String sub_howMuch = "";
   String sub_whatIs = "";
-  String balance = "0";
+  String balance = "0.0";
 
   @override
   void initState() {
@@ -171,16 +171,20 @@ class _MyHomePageState extends State<MyHomePage> {
             isAdd: list[i].type,
             onPop: _onChildPop));
       }
+      ts.balanceIt().then((value) => setState(() {
+            print("ee");
+            this.balance = value.toString();
+          }));
       setState(() {
         this.trx = txs;
       });
     });
-    ts.balanceIt().then((value) => setState((){this.balance = value.toString();}));
   }
+
   void _onChildPop() {
-    print("eee");
     _renderTransactions();
   }
+
   _done(bool isAdd) {
     if (isAdd) {
       print(add_whatIs);
@@ -240,13 +244,14 @@ class _MyHomePageState extends State<MyHomePage> {
               Text(
                   "Exporting helps you save your transactions when you are going uninstall the app."),
               Text(
-                  "The exported file will be named 'exported[date].cal' in your files.")
+                  "The exported file will be named 'exported-[date].csv' in your files.")
             ],
           ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
+                _exporting();
               },
               child: const Text('Start'),
             ),
@@ -260,6 +265,10 @@ class _MyHomePageState extends State<MyHomePage> {
         );
       },
     );
+  }
+
+  _exporting() {
+    ts.export();
   }
 
   _buildDialog(bool isAdd) {
